@@ -57,10 +57,10 @@
         }
         @media (prefers-color-scheme: dark) {
           .panel { background: #14181d; color: #e8eaee; border-color: #2a2f37; }
-          .row:hover { background: #1d242b !important; }
+          .row:hover { background: #251b31 !important; }
         }
         .hd { display:flex; align-items:center; gap:8px; padding:9px 12px; border-bottom:1px solid rgba(128,128,128,.25); }
-        .logo { display:inline-grid; place-items:center; width:20px; height:20px; border-radius:6px; background:#0f766e; color:#fff; font-weight:700; font-size:12px; }
+        .logo { display:inline-grid; place-items:center; width:20px; height:20px; border-radius:6px; background:#7e22ce; color:#fff; font-weight:700; font-size:12px; }
         .hd b { flex:1; font-size:13px; }
         .hd button { all:unset; cursor:pointer; padding:2px 7px; border-radius:6px; color:#888; font-size:14px; }
         .hd button:hover { background: rgba(128,128,128,.15); }
@@ -68,7 +68,7 @@
         .list { overflow-y:auto; padding:4px; }
         .row { display:grid; grid-template-columns:36px 1fr auto; gap:8px; align-items:center;
                padding:6px; border-radius:8px; text-decoration:none; color:inherit; }
-        .row:hover { background:#f0fdf9; }
+        .row:hover { background:#faf5ff; }
         .row img { width:36px; height:36px; object-fit:contain; border-radius:6px; background:#fff; border:1px solid rgba(128,128,128,.25); }
         .nm {
           font-weight:500; max-width:205px; overflow:hidden;
@@ -77,9 +77,9 @@
         }
         .st { font-size:9.5px; font-weight:700; color:#fff; padding:1px 6px; border-radius:999px; }
         .pr { font-weight:700; font-size:12.5px; text-align:right; }
-        .up { font-size:10.5px; color:#0f9488; text-align:right; }
+        .up { font-size:10.5px; color:#9333ea; text-align:right; }
         .addb { all:unset; cursor:pointer; margin-left:6px; width:22px; height:22px; text-align:center;
-                border-radius:6px; background:#0f766e; color:#fff; font-weight:700; font-size:13px; line-height:22px; }
+                border-radius:6px; background:#7e22ce; color:#fff; font-weight:700; font-size:13px; line-height:22px; }
         .msg { padding:18px 12px; text-align:center; color:#888; }
         .why {
           margin:2px 6px 6px; padding:6px 10px; border-radius:8px;

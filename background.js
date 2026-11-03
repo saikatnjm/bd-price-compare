@@ -160,7 +160,7 @@ async function rememberSearch(query) {
 async function updateBadge() {
   const n = cartCount(await getCart());
   await chrome.action.setBadgeText({ text: n ? String(n) : '' });
-  await chrome.action.setBadgeBackgroundColor({ color: '#0f766e' });
+  await chrome.action.setBadgeBackgroundColor({ color: '#7e22ce' });
 }
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && changes.cart) updateBadge();

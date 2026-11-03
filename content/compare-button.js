@@ -88,7 +88,7 @@
     btn.style.cssText = [
       'all:initial', 'cursor:pointer', 'display:inline-grid', 'place-items:center',
       'width:22px', 'height:22px', 'margin-left:8px', 'border-radius:50%',
-      'background:#0f766e', 'color:#fff', 'font:700 13px/1 system-ui,sans-serif',
+      'background:#7e22ce', 'color:#fff', 'font:700 13px/1 system-ui,sans-serif',
       'vertical-align:middle', 'box-shadow:0 1px 4px rgba(0,0,0,.25)',
       'transition:transform .12s'
     ].join(';');

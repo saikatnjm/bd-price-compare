@@ -1,22 +1,25 @@
+/* Plum Royale palette */
 :root {
   --bg: #ffffff;
-  --fg: #1a1f2b;
-  --muted: #6b7280;
-  --line: #e5e7eb;
-  --accent: #0f766e;
-  --accent-soft: #ecfdf5;
+  --fg: #1f1a28;
+  --muted: #6f6680;
+  --line: #e8e3ef;
+  --accent: #7e22ce;       /* buttons, active states */
+  --up: #7e22ce;           /* unit-price / highlight text */
+  --accent-soft: #f5edff;
   --best: #fff7e0;
   --best-line: #f2c200;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #111418;
-    --fg: #e8eaee;
-    --muted: #9aa3af;
-    --line: #2a2f37;
-    --accent: #2dd4bf;
-    --accent-soft: #10231f;
-    --best: #262009;
+    --bg: #16111c;
+    --fg: #ece7f2;
+    --muted: #a79cb5;
+    --line: #2f2740;
+    --accent: #7e22ce;
+    --up: #c084fc;
+    --accent-soft: #241a30;
+    --best: #261a06;
     --best-line: #8a6d00;
   }
 }
@@ -103,7 +106,7 @@ h1 { font-size: 15px; margin: 0; }
 .heron:hover { text-decoration: underline; }
 .heroright { text-align: right; }
 .heroprice { font-size: 17px; font-weight: 800; }
-.herounit { color: var(--accent); font-size: 11.5px; font-weight: 700; }
+.herounit { color: var(--up); font-size: 11.5px; font-weight: 700; }
 .herosave { color: #16a34a; font-size: 11px; font-weight: 700; margin-top: 1px; }
 .herobtns { display: flex; gap: 6px; justify-content: flex-end; margin-top: 5px; }
 .best .whyline { grid-column: 1 / -1; margin-top: 0; }
@@ -154,7 +157,7 @@ body.fullpage main { max-height: none; }
 .pricebox { text-align: right; white-space: nowrap; min-width: 64px; }
 .price { font-size: 14px; font-weight: 700; }
 .old { color: var(--muted); text-decoration: line-through; font-size: 11.5px; margin-right: 5px; }
-.unitprice { color: var(--accent); font-size: 11.5px; font-weight: 600; }
+.unitprice { color: var(--up); font-size: 11.5px; font-weight: 600; }
 .oos { color: #c0392b; font-size: 11px; font-weight: 600; }
 
 .storeerr {
