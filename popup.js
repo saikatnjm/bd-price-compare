@@ -400,6 +400,98 @@ function pickBest(items) {
   return items.reduce((a, b) => (a.price <= b.price ? a : b));
 }
 
+// ---- Share a comparison as a PNG (drawn on canvas; no remote images,
+// so the canvas stays untainted and downloadable) ----
+function shareButton(items, best, query) {
+  const btn = document.createElement('button');
+  btn.className = 'starbtn';
+  btn.textContent = '📤';
+  btn.title = t('share');
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    drawShareCard(items, best, query);
+    btn.textContent = '✓';
+    btn.title = t('shareDone');
+    setTimeout(() => { btn.textContent = '📤'; btn.title = t('share'); }, 1500);
+  });
+  return btn;
+}
+
+function drawShareCard(items, best, query) {
+  const list = [best, ...items.filter(i => i !== best)
+    .sort((a, b) => (a.unitPrice?.value ?? Infinity) - (b.unitPrice?.value ?? Infinity))].slice(0, 5);
+  const W = 800, rowH = 72, top = 140, footH = 60;
+  const H = top + list.length * rowH + footH;
+  const c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  const x = c.getContext('2d');
+
+  const g = x.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, '#16111c'); g.addColorStop(1, '#1e1628');
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+
+  x.fillStyle = '#7e22ce';
+  x.beginPath(); x.roundRect(28, 26, 44, 44, 12); x.fill();
+  x.fillStyle = '#fff';
+  x.font = '700 26px system-ui, "Noto Sans Bengali", sans-serif';
+  x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillText('৳', 50, 49);
+  x.textAlign = 'left';
+  x.font = '700 24px system-ui, sans-serif';
+  x.fillText('BD Price Compare', 86, 48);
+  x.fillStyle = '#a79cb5';
+  x.font = '15px system-ui, "Noto Sans Bengali", sans-serif';
+  const q = query.length > 70 ? query.slice(0, 69) + '…' : query;
+  x.fillText('“' + q + '”', 30, 98);
+
+  const trunc = (s, maxW, font) => {
+    x.font = font;
+    if (x.measureText(s).width <= maxW) return s;
+    while (s.length && x.measureText(s + '…').width > maxW) s = s.slice(0, -1);
+    return s + '…';
+  };
+
+  list.forEach((it, i) => {
+    const y = top + i * rowH;
+    if (i === 0) {
+      x.fillStyle = 'rgba(242,194,0,.10)';
+      x.strokeStyle = 'rgba(242,194,0,.55)';
+      x.beginPath(); x.roundRect(20, y + 2, W - 40, rowH - 8, 12); x.fill(); x.stroke();
+    }
+    x.fillStyle = it._color || '#888';
+    x.beginPath(); x.arc(44, y + 26, 6, 0, 7); x.fill();
+    x.fillStyle = i === 0 ? '#f2c200' : '#a79cb5';
+    x.font = '700 13px system-ui, sans-serif';
+    x.fillText((i === 0 ? '🏆 ' : '') + (it._label || it.store), 58, y + 27);
+    x.fillStyle = '#ece7f2';
+    x.font = '500 16px system-ui, "Noto Sans Bengali", sans-serif';
+    x.fillText(trunc(it.name, 500, '500 16px system-ui, "Noto Sans Bengali", sans-serif'), 44, y + 50);
+    x.textAlign = 'right';
+    x.font = '800 20px system-ui, "Noto Sans Bengali", sans-serif';
+    x.fillText(formatTaka(it.price), W - 36, y + 30);
+    if (it.unitPrice) {
+      x.fillStyle = '#c084fc';
+      x.font = '700 13px system-ui, "Noto Sans Bengali", sans-serif';
+      x.fillText(`${formatTaka(it.unitPrice.value)}/${it.unitPrice.label}`, W - 36, y + 52);
+    }
+    x.textAlign = 'left';
+  });
+
+  x.fillStyle = '#8d81a0';
+  x.font = '13px system-ui, sans-serif';
+  x.fillText('saikatnjm.github.io/bd-price-compare · ' + new Date().toLocaleDateString(), 30, H - 26);
+
+  c.toBlob(b => {
+    const u = URL.createObjectURL(b);
+    const a = document.createElement('a');
+    a.href = u;
+    a.download = 'bd-price-' + query.toLowerCase().replace(/[^a-z0-9ঀ-৿]+/g, '-').slice(0, 40) + '.png';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(u), 5000);
+  });
+}
+
 // Store tag: colored dot + name (quieter than a solid colored pill).
 function storeBadge(label, color) {
   const badge = document.createElement('span');
@@ -524,12 +616,19 @@ function render() {
     }
     const btns = document.createElement('div');
     btns.className = 'herobtns';
-    btns.append(starButton(best), addButton(best));
+    btns.append(shareButton(items, best, lastData.query), starButton(best), addButton(best));
     right.appendChild(btns);
     bestEl.appendChild(right);
 
     const extra = bestExplain(items, best, lastData.query);
-    for (const [icon, line] of [['💡', extra.why], ['📏', extra.sameSizeLine]]) {
+    if (best.hist?.claim === 'fake') {
+      extra.histLine = '⚠ ' + t('histFake', { hi: formatTaka(best.hist.hi), old: formatTaka(best.oldPrice) });
+    } else if (best.hist?.claim === 'real') {
+      extra.histLine = '✅ ' + t('histReal', { old: formatTaka(best.oldPrice) });
+    } else if (best.hist?.lowest && best.hist.n >= 3) {
+      extra.histLine = '🔻 ' + t('histLowest') + ` (${t('histRange', { lo: formatTaka(best.hist.lo), hi: formatTaka(best.hist.hi) })})`;
+    }
+    for (const [icon, line] of [['💡', extra.why], ['📏', extra.sameSizeLine], ['', extra.histLine]]) {
       if (!line) continue;
       const d = document.createElement('div');
       d.className = 'whyline';
@@ -609,6 +708,13 @@ function render() {
       oos.textContent = t('outOfStock');
       meta.appendChild(oos);
     }
+    if (item.hist?.claim === 'fake') {
+      const fk = document.createElement('span');
+      fk.className = 'fakepill';
+      fk.textContent = '⚠ ' + t('histFakeShort');
+      fk.title = t('histFake', { hi: formatTaka(item.hist.hi), old: formatTaka(item.oldPrice) });
+      meta.appendChild(fk);
+    }
     mid.appendChild(meta);
     a.appendChild(mid);
 
@@ -633,6 +739,14 @@ function render() {
       up.className = 'unitprice';
       up.textContent = `${formatTaka(item.unitPrice.value)}/${item.unitPrice.label}`;
       pb.appendChild(up);
+    }
+    if (item.hist) {
+      const h = document.createElement('div');
+      h.className = 'histline' + (item.hist.lowest ? ' good' : '');
+      h.textContent = item.hist.lowest
+        ? '🔻 ' + t('histLowest')
+        : t('histRange', { lo: formatTaka(item.hist.lo), hi: formatTaka(item.hist.hi) });
+      pb.appendChild(h);
     }
     right.appendChild(pb);
     right.appendChild(starButton(item));
@@ -682,7 +796,9 @@ async function renderWatch() {
     metaLine.appendChild(storeBadge(meta.label, meta.color));
     const sub = document.createElement('span');
     sub.className = 'sub';
-    sub.textContent = `${t('starredAt')} ${formatTaka(w.basePrice)} · ${new Date(w.lastChecked).toLocaleDateString()}`;
+    sub.textContent = `${t('starredAt')} ${formatTaka(w.basePrice)}` +
+      (w.target ? ` · 🎯 ${formatTaka(w.target)}` : '') +
+      ` · ${new Date(w.lastChecked).toLocaleDateString()}`;
     metaLine.appendChild(sub);
     mid.appendChild(metaLine);
     row.appendChild(mid);
@@ -696,6 +812,19 @@ async function renderWatch() {
     pb.innerHTML = `<div><span class="price" style="${dropped ? 'color:#16a34a' : raised ? 'color:#c0392b' : ''}">${formatTaka(w.lastPrice)}</span></div>` +
       (dropped ? `<div class="unitprice" style="color:#16a34a">▼ ${formatTaka(w.basePrice - w.lastPrice)}</div>` : '');
     right.appendChild(pb);
+    const tgt = document.createElement('button');
+    tgt.className = 'rm';
+    tgt.textContent = '🎯';
+    tgt.title = t('watchTarget');
+    tgt.addEventListener('click', async e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const v = prompt(t('watchTarget'), w.target || Math.floor(w.basePrice * 0.9));
+      if (v === null) return;
+      await chrome.runtime.sendMessage({ type: 'WATCH_TARGET', key: w.key, target: Number(v) || 0 });
+      renderWatch();
+    });
+    right.appendChild(tgt);
     const rm = document.createElement('button');
     rm.className = 'rm';
     rm.textContent = '🗑';

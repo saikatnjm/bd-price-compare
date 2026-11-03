@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BD Price Compare — Compare Prices Across Bangladeshi Online Shops | Free Chrome Extension</title>
-  <meta name="description" content="Free, open-source Chrome extension that compares product prices across Shwapno, Meena Bazar, Pandamart, Daraz, Chaldal, Star Tech, Ryans, Gadget & Gear, Pickaboo and more Bangladeshi online shops — with per-kg / per-litre unit prices, Buy1-Get1 aware best-deal picks, price watch and a cross-store cart. English + বাংলা.">
-  <meta name="keywords" content="price comparison Bangladesh, BD price compare, Chrome extension, Daraz price, Shwapno price, Meena Bazar online, Pandamart foodpanda, Chaldal, Star Tech price, Ryans computers, Gadget and Gear, Pickaboo, best deal Bangladesh, grocery price Dhaka, electronics price BD, দাম তুলনা, unit price, price tracker, আজকের বাজার দর, daily market price Bangladesh, onion price today, rice price BD, soybean oil price">
+  <meta name="description" content="Free, open-source Chrome extension that compares product prices across Shwapno, Meena Bazar, Pandamart, Daraz, Chaldal, Star Tech, Ryans, Gadget & Gear, Pickaboo and more Bangladeshi online shops — with per-kg / per-litre unit prices, 30-day price history, fake-discount detection, Buy1-Get1 aware best-deal picks, daily bazar rates (আজকের বাজার দর), price-drop alerts and a cross-store cart. English + বাংলা.">
+  <meta name="keywords" content="price comparison Bangladesh, BD price compare, Chrome extension, Daraz price, Shwapno price, Meena Bazar online, Pandamart foodpanda, Chaldal, Star Tech price, Ryans computers, Gadget and Gear, Pickaboo, best deal Bangladesh, grocery price Dhaka, electronics price BD, দাম তুলনা, unit price, price tracker, আজকের বাজার দর, daily market price Bangladesh, onion price today, rice price BD, soybean oil price, price history Bangladesh, daraz price history, fake discount checker, daraz 11.11 real discount, price drop alert, price tracker extension, দাম কমার এলার্ট, ভুয়া ছাড়">
   <meta name="author" content="Saikat Roy">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://saikatnjm.github.io/bd-price-compare/">
@@ -40,7 +40,19 @@
         "operatingSystem": "Chrome, Chromium, Edge, Brave",
         "applicationCategory": "ShoppingApplication",
         "applicationSubCategory": "Price comparison browser extension",
-        "description": "Chrome extension that compares product prices across Bangladeshi online shops (Shwapno, Meena Bazar, Pandamart, Daraz, Chaldal, Star Tech, Ryans, Gadget & Gear, Pickaboo, Techland, Sumash Tech, Global Brand, Othoba) with per-kg/per-litre unit prices, Buy1-Get1-aware best-deal ranking, price watch and a cross-store cart. Bilingual English/Bangla.",
+        "description": "Chrome extension that compares product prices across Bangladeshi online shops (Shwapno, Meena Bazar, Pandamart, Daraz, Chaldal, Star Tech, Ryans, Gadget & Gear, Pickaboo, Techland, Sumash Tech, Global Brand, Othoba) with per-kg/per-litre unit prices, 30-day price history with fake-discount detection, Buy1-Get1-aware best-deal ranking, daily bazar staple rates, price-drop alerts with custom targets, shareable comparison images and a cross-store cart. Bilingual English/Bangla.",
+        "featureList": [
+          "Price comparison across 13 Bangladeshi stores",
+          "Per-kg / per-litre unit prices",
+          "30-day price history and lowest-price badges",
+          "Fake discount detection (strikethrough price verification)",
+          "Daily Bazar: today's staple prices (আজকের বাজার দর)",
+          "Price-drop alerts with custom target price",
+          "Buy1-Get1 / B1G1 aware ranking",
+          "Share comparison as image",
+          "Cross-store cart with checkout handoff",
+          "Bilingual English and Bangla interface"
+        ],
         "url": "https://saikatnjm.github.io/bd-price-compare/",
         "downloadUrl": "https://saikatnjm.github.io/bd-price-compare/bd-price-compare.zip",
         "image": "https://saikatnjm.github.io/bd-price-compare/og-image.png",
@@ -87,6 +99,16 @@
             "@type": "Question",
             "name": "Why isn't it on the Chrome Web Store?",
             "acceptedAnswer": { "@type": "Answer", "text": "It's a personal open-source project installed as an unpacked extension — download the zip, enable Developer mode in chrome://extensions and load the folder. It takes about a minute, and updates are a git pull away." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can it tell whether a discount is real?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. The extension logs prices locally as you search, so after a few days it knows each product's 30-day range. If a store shows a strikethrough 'old price' the product never actually sold at recently, the result is flagged as a possible fake discount — especially useful during 11.11 and 12.12 sales. Genuine discounts get a verified mark, and true 30-day-lowest prices get a badge." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it track price history?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes — every search quietly saves one local price point per product per day (up to 60 days, entirely on your machine). Results then show each item's 30-day low–high range and a 'lowest in 30 days' badge, and starred products alert you when they drop below your own target price." }
           },
           {
             "@type": "Question",
@@ -300,8 +322,12 @@
           <p>A small ৳ button appears next to product titles on shop pages; or select any product name anywhere → right-click → Compare BD prices.</p></div>
         <div class="card"><span class="ic">🛒</span><b>One cart, every store</b>
           <p>Build a single cart, then let it fill each store's real cart through your own session. Checkout and payment stay on the store's site, in your hands.</p></div>
-        <div class="card"><span class="ic">⭐</span><b>Price watch</b>
-          <p>Star any product; it's re-checked daily and you get a notification the moment the price drops below what you starred it at.</p></div>
+        <div class="card"><span class="ic">📈</span><b>Price history &amp; fake-discount check</b>
+          <p>Prices are logged locally as you search. Results show each item's 30-day range, a “lowest in 30 days” badge — and a ⚠ flag when a strikethrough “old price” was never actually charged. 11.11-proof.</p></div>
+        <div class="card"><span class="ic">⭐</span><b>Price watch with targets</b>
+          <p>Star any product; it's re-checked daily and you get a notification when it drops below your own 🎯 target price (or what you starred it at).</p></div>
+        <div class="card"><span class="ic">📤</span><b>Share as image</b>
+          <p>One tap turns any comparison into a clean WhatsApp/Facebook-ready image card — best deal crowned, all stores listed.</p></div>
         <div class="card"><span class="ic">🧺</span><b>Daily Bazar — আজকের বাজার দর</b>
           <p>Today's prices of 9 staples — rice, soybean oil, onion, potato, eggs, dal, sugar, salt, atta — with day-over-day change and 7-day trends, from your own branches.</p></div>
         <div class="card"><span class="ic">🧭</span><b>Category smart</b>
@@ -355,6 +381,10 @@
       <details>
         <summary>Why isn't it on the Chrome Web Store?</summary>
         <p>It's a personal open-source project installed as an unpacked extension — the download-and-load takes about a minute. A Web Store release may come later.</p>
+      </details>
+      <details>
+        <summary>Can it tell whether a discount is real?</summary>
+        <p>Yes — it logs prices locally as you search. After a few days it knows each product's 30-day range: results show the low–high band, a 🔻 “lowest in 30 days” badge, and a ⚠ flag when a strikethrough “old price” was never actually charged recently. Handy during 11.11 / 12.12 sales.</p>
       </details>
       <details>
         <summary>বাংলায় কাজ করে?</summary>

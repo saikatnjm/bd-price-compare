@@ -49,12 +49,27 @@ and Meena Bazar (your selected branches), with day-over-day ▲▼ change and a
 background tabs); 30 days of history kept locally. "Check now" re-checks on
 demand.
 
+## 📈 Price history & fake-discount check
+
+Every search quietly logs one **local** price point per product per day (up
+to 60 days, max ~500 products, nothing leaves your machine). Results then
+show each item's 30-day low–high range, a 🔻 **lowest in 30 days** badge —
+and a ⚠ **fake discount?** flag when a strikethrough "old price" was never
+actually charged in the last 30 days (needs 5+ days of data). Genuine
+discounts on the best-deal card get a ✅ verified line.
+
+## 📤 Share as image
+
+The 📤 button on the best-deal card renders the comparison as a clean PNG
+(best deal crowned, all stores listed) — ready for WhatsApp or Facebook.
+
 ## ⭐ Price watch
 
 Tap **☆** on any result to watch it. Watched items are re-checked once a day
 (direct-API stores only; tab-scraped stores update when you hit "Check now"),
-and you get a Chrome notification when a price drops below what you starred
-it at. The ⭐ Watch tab shows starred vs current price with the drop amount.
+and you get a Chrome notification when a price drops below your own 🎯
+**target price** (set it from the Watch tab) or what you starred it at.
+The ⭐ Watch tab shows starred vs current price with the drop amount.
 
 ## Stores
 

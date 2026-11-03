@@ -12,7 +12,8 @@
       openFull: 'Open extension for more', failedStores: 'No reply from', cached: 'cached',
       reasonBigger: '{ratio} bigger for {diff} more — {pct}% cheaper per {unit}',
       reasonCheaper: '{ratio} bigger and {diff} cheaper — {pct}% less per {unit}',
-      sameSizeTag: 'same size'
+      sameSizeTag: 'same size',
+      histRange: '30d: {lo}–{hi}', histLowest: 'lowest in 30d', fakeTag: 'fake discount?'
     },
     bn: {
       title: 'বিডি প্রাইস কম্পেয়ার', searching: 'আপনার দোকানগুলোতে খোঁজা হচ্ছে…',
@@ -20,7 +21,8 @@
       openFull: 'আরও দেখতে এক্সটেনশন খুলুন', failedStores: 'সাড়া নেই', cached: 'ক্যাশ',
       reasonBigger: '{ratio} বড়, দাম {diff} বেশি — প্রতি {unit} এ {pct}% সাশ্রয়',
       reasonCheaper: '{ratio} বড় এবং {diff} সস্তা — প্রতি {unit} এ {pct}% সাশ্রয়',
-      sameSizeTag: 'একই সাইজ'
+      sameSizeTag: 'একই সাইজ',
+      histRange: '৩০ দিনে: {lo}–{hi}', histLowest: '৩০ দিনের সর্বনিম্ন', fakeTag: 'ভুয়া ছাড়?'
     }
   };
 
@@ -97,6 +99,13 @@
           vertical-align:1px; font-weight:700;
         }
         .ft { padding:7px 12px; border-top:1px solid rgba(128,128,128,.25); font-size:11px; color:#888; }
+        .hl { font-size:9.5px; color:#888; text-align:right; }
+        .hl.good { color:#16a34a; font-weight:700; }
+        .fktag {
+          display:inline-block; margin-left:5px; padding:0 6px; border-radius:999px;
+          border:1px solid rgba(229,72,77,.6); font-size:9.5px; color:#e5484d;
+          vertical-align:1px; font-weight:700;
+        }
       </style>
       <div class="panel">
         <div class="hd"><span class="logo">৳</span><b>${t.title}</b><button id="x" title="${t.close}">✕</button></div>
@@ -253,6 +262,12 @@
         tag.textContent = '📏 ' + t.sameSizeTag;
         mid.appendChild(tag);
       }
+      if (item.hist?.claim === 'fake') {
+        const tag = document.createElement('span');
+        tag.className = 'fktag';
+        tag.textContent = '⚠ ' + t.fakeTag;
+        mid.appendChild(tag);
+      }
       a.appendChild(mid);
       const right = document.createElement('div');
       right.style.cssText = 'display:flex;align-items:center;';
@@ -266,6 +281,14 @@
         up.className = 'up';
         up.textContent = `${taka(item.unitPrice.value)}/${item.unitPrice.label}`;
         pwrap.appendChild(up);
+      }
+      if (item.hist) {
+        const h = document.createElement('div');
+        h.className = 'hl' + (item.hist.lowest ? ' good' : '');
+        h.textContent = item.hist.lowest
+          ? '🔻 ' + t.histLowest
+          : fill(t.histRange, { lo: taka(item.hist.lo), hi: taka(item.hist.hi) });
+        pwrap.appendChild(h);
       }
       const btn = document.createElement('button');
       btn.className = 'addb';

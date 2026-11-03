@@ -89,8 +89,10 @@
         { name: 'Himalaya Gentle Daily Care Shampoo 400ml', price: 520, url: '#', image: IMG }
       ], 400),
       mk('meenabazar', 'Meena Bazar', '#00843d', [
-        { name: 'HIMALAYA ANTI HAIR FALL SHAMPOO 180ML B1G1', price: 270, url: '#', image: IMG },
-        { name: 'Himalaya Anti Hair Fall Shampoo Cc 375ml Save40%', price: 288, oldPrice: 480, url: '#', image: IMG }
+        { name: 'HIMALAYA ANTI HAIR FALL SHAMPOO 180ML B1G1', price: 270, url: '#', image: IMG,
+          hist: { lo: 270, hi: 285, n: 9, lowest: true } },
+        { name: 'Himalaya Anti Hair Fall Shampoo Cc 375ml Save40%', price: 288, oldPrice: 480, url: '#', image: IMG,
+          hist: { lo: 265, hi: 295, n: 12, claim: 'fake' } }
       ], 900),
       mk('daraz', 'Daraz', '#f57224', [
         { name: 'Himalaya Anti Hair Fall Shampoo 340ml', price: 465, url: '#', image: IMG, rating: 4.7, reviews: 211 }

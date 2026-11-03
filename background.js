@@ -12,6 +12,7 @@ import { enrich, matchScore } from './lib/normalize.js';
 import { waitForLoad } from './lib/tabScrape.js';
 import { getCart, addToCart, cartCount, itemKey } from './lib/cart.js';
 import { maybeRefreshBazar } from './lib/bazar.js';
+import { logResults, attachHistory } from './lib/history.js';
 import { addToCartOnPage, addToCartOnDarkstore, STORE_CHECKOUT } from './lib/autoAdd.js';
 
 const ADAPTERS = [
@@ -100,6 +101,8 @@ async function runSearch(query, category, onEvent = () => {}) {
     try {
       const items = await withTimeout(adapter.search(query, settings), timeout, adapter.label);
       items.forEach(enrich);
+      await attachHistory(items);  // yesterday-and-earlier stats for badges/verdicts
+      await logResults(items);     // then today's prices join the log
       return {
         store: adapter.id, label: adapter.label, color: adapter.color,
         searchUrl: adapter.searchUrl(query), ok: true, ms: Date.now() - started, items
@@ -286,7 +289,10 @@ async function checkWatch(watch, { manual }) {
   if (!match) return;
   watch.lastPrice = match.price;
   watch.lastChecked = Date.now();
-  if (match.price < watch.basePrice && watch.notifiedPrice !== match.price) {
+  // Notify below the user's own target when they set one, else below the
+  // price they starred it at.
+  const threshold = watch.target != null ? watch.target + 0.001 : watch.basePrice;
+  if (match.price < threshold && watch.notifiedPrice !== match.price) {
     watch.notifiedPrice = match.price;
     const { uiLang } = await chrome.storage.sync.get('uiLang');
     chrome.notifications.create(`drop:${watch.key}`, {
@@ -412,6 +418,18 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
   if (msg?.type === 'WATCH_REMOVE') {
     removeWatch(msg.key).then(ws => sendResponse({ ok: true, count: ws.length }));
+    return true;
+  }
+  if (msg?.type === 'WATCH_TARGET') {
+    getWatches().then(async ws => {
+      const w = ws.find(x => x.key === msg.key);
+      if (w) {
+        w.target = msg.target > 0 ? msg.target : null;
+        w.notifiedPrice = null; // re-arm the notification for the new target
+        await chrome.storage.local.set({ watches: ws });
+      }
+      sendResponse({ ok: !!w });
+    });
     return true;
   }
   if (msg?.type === 'BAZAR_REFRESH') {
