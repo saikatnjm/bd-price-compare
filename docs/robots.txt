@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://saikatnjm.github.io/bd-price-compare/sitemap.xml

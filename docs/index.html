@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BD Price Compare — Compare Prices Across Bangladeshi Online Shops | Free Chrome Extension</title>
+  <meta name="description" content="Free, open-source Chrome extension that compares product prices across Shwapno, Meena Bazar, Pandamart, Daraz, Chaldal, Star Tech, Ryans, Gadget & Gear, Pickaboo and more Bangladeshi online shops — with per-kg / per-litre unit prices, Buy1-Get1 aware best-deal picks, price watch and a cross-store cart. English + বাংলা.">
+  <meta name="keywords" content="price comparison Bangladesh, BD price compare, Chrome extension, Daraz price, Shwapno price, Meena Bazar online, Pandamart foodpanda, Chaldal, Star Tech price, Ryans computers, Gadget and Gear, Pickaboo, best deal Bangladesh, grocery price Dhaka, electronics price BD, দাম তুলনা, unit price, price tracker">
+  <meta name="author" content="Saikat Roy">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://saikatnjm.github.io/bd-price-compare/">
+  <link rel="icon" href="icon128.png" type="image/png">
+  <meta name="theme-color" content="#0f766e">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BD Price Compare">
+  <meta property="og:title" content="BD Price Compare — find the real best deal across Bangladeshi online shops">
+  <meta property="og:description" content="One search, every store you use: Shwapno, Meena Bazar, Pandamart, Daraz, Star Tech, Ryans & more. Per-kg / per-litre unit prices, B1G1-aware, price watch, English + বাংলা. Free & open source.">
+  <meta property="og:url" content="https://saikatnjm.github.io/bd-price-compare/">
+  <meta property="og:image" content="https://saikatnjm.github.io/bd-price-compare/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="bn_BD">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BD Price Compare — Chrome extension for Bangladeshi online shopping">
+  <meta name="twitter:description" content="Compare prices across 13 Bangladeshi stores in one click. Unit prices, B1G1-aware best deals, price watch. Free & open source.">
+  <meta name="twitter:image" content="https://saikatnjm.github.io/bd-price-compare/og-image.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "BD Price Compare",
+        "operatingSystem": "Chrome, Chromium, Edge, Brave",
+        "applicationCategory": "ShoppingApplication",
+        "applicationSubCategory": "Price comparison browser extension",
+        "description": "Chrome extension that compares product prices across Bangladeshi online shops (Shwapno, Meena Bazar, Pandamart, Daraz, Chaldal, Star Tech, Ryans, Gadget & Gear, Pickaboo, Techland, Sumash Tech, Global Brand, Othoba) with per-kg/per-litre unit prices, Buy1-Get1-aware best-deal ranking, price watch and a cross-store cart. Bilingual English/Bangla.",
+        "url": "https://saikatnjm.github.io/bd-price-compare/",
+        "downloadUrl": "https://saikatnjm.github.io/bd-price-compare/bd-price-compare.zip",
+        "image": "https://saikatnjm.github.io/bd-price-compare/og-image.png",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BDT" },
+        "inLanguage": ["en", "bn"],
+        "isAccessibleForFree": true,
+        "license": "https://github.com/saikatnjm/bd-price-compare/blob/main/LICENSE",
+        "author": { "@type": "Person", "name": "Saikat Roy", "url": "https://github.com/saikatnjm" }
+      },
+      {
+        "@type": "HowTo",
+        "name": "How to install BD Price Compare in Chrome",
+        "totalTime": "PT1M",
+        "step": [
+          { "@type": "HowToStep", "name": "Download", "text": "Click “Download for Chrome” and unzip the file anywhere on your computer." },
+          { "@type": "HowToStep", "name": "Open extensions page", "text": "In Chrome open chrome://extensions and switch on Developer mode (top-right toggle)." },
+          { "@type": "HowToStep", "name": "Load it", "text": "Click “Load unpacked”, pick the unzipped bd-price-compare folder, then pin the ৳ icon to your toolbar." }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Which Bangladeshi stores does BD Price Compare search?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Groceries: Shwapno, Meena Bazar, Pandamart (foodpanda) and Chaldal. Electronics: Star Tech, Ryans, Gadget & Gear, Pickaboo, Techland, Sumash Tech and Global Brand. Daraz and Othoba cover both. You pick which stores are searched in Settings; the major three of each category are on by default." }
+          },
+          {
+            "@type": "Question",
+            "name": "Is it free? Do I need an account?",
+            "acceptedAnswer": { "@type": "Answer", "text": "It is completely free and open source. No account, no sign-up, no server: everything runs locally in your browser using your own store logins. Nothing is sent anywhere else." }
+          },
+          {
+            "@type": "Question",
+            "name": "How does it find the real best deal?",
+            "acceptedAnswer": { "@type": "Answer", "text": "It normalises every result to a per-kg or per-litre unit price, understands pack sizes like 2×400gm and Buy1-Get1 offers (a 180ml B1G1 shampoo counts as 360ml), and crowns the lowest true unit price — explaining why a bigger pack wins even when its sticker price is higher." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can it order for me?",
+            "acceptedAnswer": { "@type": "Answer", "text": "You build one cart in the extension; it then adds those items to each store's real cart using your own logged-in session and opens the store's cart page. Login, checkout and payment always stay in your hands on the store's own website." }
+          },
+          {
+            "@type": "Question",
+            "name": "Why isn't it on the Chrome Web Store?",
+            "acceptedAnswer": { "@type": "Answer", "text": "It's a personal open-source project installed as an unpacked extension — download the zip, enable Developer mode in chrome://extensions and load the folder. It takes about a minute, and updates are a git pull away." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it work in Bangla?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes — one tap on the বাং/EN button switches the whole interface between Bangla and English, including the right-click menu and explanations." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #0b1416; --panel: #101e21; --line: #223438; --fg: #e8efee;
+      --muted: #93a8a5; --accent: #2dd4bf; --accent-deep: #0f766e;
+      --gold: #f2c200; --pink: #e2136e;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Bengali", sans-serif;
+    }
+    a { color: var(--accent); }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+    header.site {
+      display: flex; align-items: center; gap: 10px; padding: 18px 0;
+    }
+    .logo {
+      display: inline-grid; place-items: center; width: 34px; height: 34px;
+      border-radius: 10px; background: var(--accent-deep); color: #fff;
+      font-weight: 700; font-size: 19px; flex: none;
+    }
+    header.site b { font-size: 17px; }
+    header.site nav { margin-left: auto; display: flex; gap: 18px; font-size: 14.5px; }
+    header.site nav a { color: var(--muted); text-decoration: none; }
+    header.site nav a:hover { color: var(--fg); }
+
+    .hero { display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; align-items: center; padding: 48px 0 56px; }
+    h1 { font-size: clamp(30px, 4.5vw, 44px); line-height: 1.15; margin: 0 0 14px; }
+    h1 em { font-style: normal; color: var(--accent); }
+    .tagline { color: var(--muted); font-size: 18px; margin: 0 0 26px; }
+    .cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--accent-deep); color: #fff; text-decoration: none;
+      font-weight: 700; font-size: 17px; padding: 14px 26px; border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(15, 118, 110, .45); transition: transform .12s;
+    }
+    .cta:hover { transform: translateY(-2px); }
+    .cta small { font-weight: 500; opacity: .8; }
+    .ctasub { color: var(--muted); font-size: 13px; margin-top: 10px; }
+    .ghlink { margin-left: 14px; color: var(--muted); font-size: 14.5px; }
+
+    /* mock best-deal card */
+    .mock {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+      padding: 16px; box-shadow: 0 16px 50px rgba(0,0,0,.45); font-size: 13.5px;
+    }
+    .mock .mhead { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12.5px; margin-bottom: 12px; }
+    .mock .mhead .logo { width: 22px; height: 22px; font-size: 13px; border-radius: 7px; }
+    .mcard {
+      display: grid; grid-template-columns: 1fr auto; gap: 6px 12px;
+      background: #1d1a06; border: 1px solid #6b5600; border-radius: 12px; padding: 12px 14px;
+    }
+    .mcrown { grid-column: 1/-1; font-size: 11px; font-weight: 800; letter-spacing: .06em; color: var(--gold); }
+    .mname { font-weight: 600; }
+    .mprice { text-align: right; font-size: 19px; font-weight: 800; }
+    .munit { text-align: right; color: var(--accent); font-weight: 700; font-size: 12.5px; }
+    .mmeta { color: var(--muted); font-size: 12px; }
+    .mmeta .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); margin-right: 5px; }
+    .mwhy {
+      grid-column: 1/-1; margin-top: 6px; padding: 7px 10px; border-radius: 8px;
+      background: rgba(242,194,0,.1); border: 1px solid rgba(242,194,0,.4);
+      font-size: 12px; font-weight: 600;
+    }
+    .mrow { display: flex; justify-content: space-between; gap: 10px; padding: 9px 6px 0; color: var(--muted); font-size: 12.5px; }
+    .mrow b { color: var(--fg); font-weight: 600; }
+
+    section { padding: 34px 0; border-top: 1px solid var(--line); }
+    h2 { font-size: 26px; margin: 0 0 6px; }
+    .sub { color: var(--muted); margin: 0 0 24px; }
+
+    .stores { display: flex; flex-wrap: wrap; gap: 10px; }
+    .store {
+      display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600;
+      border: 1px solid var(--line); border-radius: 999px; padding: 7px 15px; color: var(--fg);
+    }
+    .store i { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+    .storecat { width: 100%; color: var(--muted); font-size: 13px; margin: 10px 0 2px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+    .card {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px;
+    }
+    .card b { display: block; font-size: 15.5px; margin-bottom: 6px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .card .ic { font-size: 22px; display: block; margin-bottom: 8px; }
+
+    ol.steps { counter-reset: s; list-style: none; padding: 0; display: grid; gap: 12px; }
+    ol.steps li {
+      counter-increment: s; background: var(--panel); border: 1px solid var(--line);
+      border-radius: 14px; padding: 16px 18px 16px 62px; position: relative;
+    }
+    ol.steps li::before {
+      content: counter(s); position: absolute; left: 16px; top: 16px;
+      width: 30px; height: 30px; display: grid; place-items: center;
+      background: var(--accent-deep); color: #fff; font-weight: 800; border-radius: 50%;
+    }
+    code { background: #182a2d; border: 1px solid var(--line); padding: 1px 7px; border-radius: 6px; font-size: 14px; }
+
+    details {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+      padding: 14px 18px; margin-bottom: 10px;
+    }
+    summary { cursor: pointer; font-weight: 600; }
+    details p { color: var(--muted); margin: 10px 0 2px; }
+
+    .bn { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+    .bn h2 { font-size: 22px; }
+    .bn p { color: var(--muted); }
+
+    footer.site { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--muted); font-size: 13.5px; }
+    footer.site a { color: var(--muted); }
+
+    @media (max-width: 760px) {
+      .hero { grid-template-columns: 1fr; padding-top: 24px; }
+      header.site nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <span class="logo">৳</span><b>BD Price Compare</b>
+      <nav>
+        <a href="#stores">Stores</a>
+        <a href="#features">Features</a>
+        <a href="#install">Install</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://github.com/saikatnjm/bd-price-compare">GitHub</a>
+      </nav>
+    </header>
+
+    <section class="hero" style="border-top:none">
+      <div>
+        <h1>One search. Every Bangladeshi store you shop at. The <em>real</em> best deal.</h1>
+        <p class="tagline">A free, open-source Chrome extension that compares prices across
+          Shwapno, Meena Bazar, Pandamart, Daraz, Star Tech, Ryans and more —
+          ranked by true per-kg / per-litre unit price, in English and বাংলা.</p>
+        <a class="cta" href="bd-price-compare.zip" download>
+          ⬇ Download for Chrome <small>· free · ~80 KB</small>
+        </a>
+        <a class="ghlink" href="https://github.com/saikatnjm/bd-price-compare">View source on GitHub</a>
+        <div class="ctasub">Unzip → <code>chrome://extensions</code> → Load unpacked. Takes a minute, no account needed.</div>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="mhead"><span class="logo">৳</span> BD Price Compare — “himalaya shampoo 180ml b1g1”</div>
+        <div class="mcard">
+          <div class="mcrown">🏆 BEST DEAL</div>
+          <div>
+            <div class="mname">Himalaya Anti Hair Fall Shampoo 180ml (Buy1 Get1)</div>
+            <div class="mmeta"><span class="dot"></span>Shwapno · 🎁 180ml ×2</div>
+          </div>
+          <div>
+            <div class="mprice">৳270</div>
+            <div class="munit">৳750/L</div>
+          </div>
+          <div class="mwhy">💡 Buy1-Get1 counted as 360ml — 2.4% cheaper per litre than the next store</div>
+        </div>
+        <div class="mrow"><span><b>Meena Bazar</b> · 375ml</span><span><b>৳288</b> · ৳768/L</span></div>
+        <div class="mrow"><span><b>Daraz</b> · 340ml</span><span><b>৳465</b> · ৳1,367/L</span></div>
+        <div class="mrow"><span><b>Pandamart</b> · 320ml</span><span><b>৳265</b> · ৳828/L</span></div>
+      </div>
+    </section>
+
+    <section id="stores">
+      <h2>13 Bangladeshi stores, one click</h2>
+      <p class="sub">Searched with your own logged-in sessions, locally in your browser. Pick your stores in Settings — the major three of each category are on by default.</p>
+      <div class="stores">
+        <div class="storecat">🥬 Groceries</div>
+        <span class="store"><i style="background:#e2136e"></i>Shwapno</span>
+        <span class="store"><i style="background:#00843d"></i>Meena Bazar</span>
+        <span class="store"><i style="background:#d70f64"></i>Pandamart (foodpanda)</span>
+        <span class="store"><i style="background:#f9a825"></i>Chaldal</span>
+        <div class="storecat">💻 Electronics &amp; gadgets</div>
+        <span class="store"><i style="background:#ef4a23"></i>Star Tech</span>
+        <span class="store"><i style="background:#2563eb"></i>Ryans</span>
+        <span class="store"><i style="background:#7c3aed"></i>Gadget &amp; Gear</span>
+        <span class="store"><i style="background:#0ea5e9"></i>Pickaboo</span>
+        <span class="store"><i style="background:#16a34a"></i>Techland</span>
+        <span class="store"><i style="background:#db2777"></i>Sumash Tech</span>
+        <span class="store"><i style="background:#0891b2"></i>Global Brand</span>
+        <div class="storecat">🛒 Everything</div>
+        <span class="store"><i style="background:#f57224"></i>Daraz</span>
+        <span class="store"><i style="background:#65a30d"></i>Othoba</span>
+      </div>
+    </section>
+
+    <section id="features">
+      <h2>Why it finds deals other tools miss</h2>
+      <p class="sub">Sticker prices lie. Pack sizes, Buy1-Get1 offers and per-unit maths decide what's actually cheap.</p>
+      <div class="grid">
+        <div class="card"><span class="ic">⚖️</span><b>True unit prices</b>
+          <p>Every result is normalised to ৳/kg, ৳/L or ৳/piece — including multipacks like “2 × 400gm” and “5gm 24 pcs”.</p></div>
+        <div class="card"><span class="ic">🎁</span><b>Buy1-Get1 aware</b>
+          <p>A 180ml B1G1 shampoo is really 360ml in your bag. The extension counts it, tags it ×2, and ranks it by what you actually pay per litre.</p></div>
+        <div class="card"><span class="ic">🏆</span><b>Explained best deal</b>
+          <p>The winner is crowned with the reason — “2× bigger for ৳21 more, 45% cheaper per litre” — plus the cheapest same-size option pinned next to it.</p></div>
+        <div class="card"><span class="ic">৳</span><b>Compare from any page</b>
+          <p>A small ৳ button appears next to product titles on shop pages; or select any product name anywhere → right-click → Compare BD prices.</p></div>
+        <div class="card"><span class="ic">🛒</span><b>One cart, every store</b>
+          <p>Build a single cart, then let it fill each store's real cart through your own session. Checkout and payment stay on the store's site, in your hands.</p></div>
+        <div class="card"><span class="ic">⭐</span><b>Price watch</b>
+          <p>Star any product; it's re-checked daily and you get a notification the moment the price drops below what you starred it at.</p></div>
+        <div class="card"><span class="ic">🧭</span><b>Category smart</b>
+          <p>Knows groceries from electronics, auto-detects which one you're searching, and never opens pointless tabs — stores are queried one at a time, politely.</p></div>
+        <div class="card"><span class="ic">🌏</span><b>English + বাংলা</b>
+          <p>One tap switches the entire interface, explanations included. Location-aware too: it follows your last-visited pandamart and your Meena Bazar branch.</p></div>
+      </div>
+    </section>
+
+    <section id="install">
+      <h2>Install in under a minute</h2>
+      <p class="sub">It's a standard unpacked Chrome extension — no account, no build tools.</p>
+      <ol class="steps">
+        <li><b>Download &amp; unzip.</b> Grab <a href="bd-price-compare.zip" download>bd-price-compare.zip</a> and extract it anywhere (keep the folder).</li>
+        <li><b>Enable Developer mode.</b> Open <code>chrome://extensions</code> and flip the “Developer mode” toggle in the top-right corner.</li>
+        <li><b>Load unpacked.</b> Click “Load unpacked”, choose the extracted <code>bd-price-compare</code> folder, then pin the ৳ icon. Done — search your first product.</li>
+      </ol>
+      <p class="sub" style="margin-top:14px">Works on Chrome, Edge, Brave and any Chromium browser. To update later: download the new zip over the old folder (or <code>git pull</code>) and hit ↻ on the extensions page.</p>
+    </section>
+
+    <section id="privacy">
+      <h2>Private by design</h2>
+      <div class="grid">
+        <div class="card"><span class="ic">🔒</span><b>No server, no tracking</b>
+          <p>Everything runs locally in your browser with your own store logins. No data ever leaves your machine — there's nothing to send it to.</p></div>
+        <div class="card"><span class="ic">🤝</span><b>Polite to the stores</b>
+          <p>Repeated searches are cached, actions are human-paced, and there's no CAPTCHA bypassing or header spoofing — it's your normal session doing normal searches.</p></div>
+        <div class="card"><span class="ic">🧾</span><b>Open source</b>
+          <p>Every line is readable on <a href="https://github.com/saikatnjm/bd-price-compare">GitHub</a>. Audit it, fork it, add your own store adapter.</p></div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2>Frequently asked questions</h2>
+      <details open>
+        <summary>Which Bangladeshi stores does it search?</summary>
+        <p>Groceries: Shwapno, Meena Bazar, Pandamart (foodpanda), Chaldal. Electronics: Star Tech, Ryans, Gadget &amp; Gear, Pickaboo, Techland, Sumash Tech, Global Brand. Both: Daraz and Othoba. You choose which ones in Settings; the major three per category are on by default.</p>
+      </details>
+      <details>
+        <summary>Is it free? Do I need an account?</summary>
+        <p>Completely free and open source. No account, no sign-up, no server — it uses the store logins already in your browser.</p>
+      </details>
+      <details>
+        <summary>How does it pick the “best deal”?</summary>
+        <p>Lowest <em>unit</em> price among comparable products — ৳ per kg or litre — with pack sizes and Buy1-Get1 offers counted in. When a bigger pack wins despite a higher sticker price, it tells you why and pins the cheapest same-size option right below.</p>
+      </details>
+      <details>
+        <summary>Can it place orders for me?</summary>
+        <p>It fills each store's real cart for you using your own session, then hands over. Login, checkout and payment always happen on the store's own website, by you.</p>
+      </details>
+      <details>
+        <summary>Why isn't it on the Chrome Web Store?</summary>
+        <p>It's a personal open-source project installed as an unpacked extension — the download-and-load takes about a minute. A Web Store release may come later.</p>
+      </details>
+      <details>
+        <summary>বাংলায় কাজ করে?</summary>
+        <p>হ্যাঁ — বাং/EN বাটনে এক ট্যাপেই পুরো ইন্টারফেস বাংলা হয়ে যায়, ব্যাখ্যাসহ।</p>
+      </details>
+    </section>
+
+    <section class="bn" id="bangla" lang="bn">
+      <h2>🇧🇩 বাংলাদেশের অনলাইন বাজারে সেরা দামটা খুঁজে দেয়</h2>
+      <p>বিডি প্রাইস কম্পেয়ার একটি ফ্রি ক্রোম এক্সটেনশন — একবার সার্চ করলেই স্বপ্ন, মীনা বাজার,
+      প্যান্ডামার্ট, দারাজ, স্টার টেক, রায়ান্স-সহ ১৩টি দোকানের দাম পাশাপাশি দেখায়। প্রতি কেজি /
+      প্রতি লিটার হিসাবে আসল সস্তাটা বের করে, Buy1-Get1 অফারও হিসাবের মধ্যে ধরে। দাম কমলে
+      নোটিফিকেশন, এক কার্টে সব দোকানের বাজার, সবকিছু আপনার নিজের ব্রাউজারে — কোনো তথ্য
+      বাইরে যায় না। <a href="bd-price-compare.zip" download>ডাউনলোড করুন</a> আর এক মিনিটে ইনস্টল করুন।</p>
+    </section>
+
+    <footer class="site">
+      <div>Built by <a href="https://github.com/saikatnjm">Saikat Roy</a> ·
+        <a href="https://github.com/saikatnjm/bd-price-compare">Source on GitHub</a> ·
+        MIT-style personal project — not affiliated with any of the stores; all trademarks belong to their owners.
+        Prices are read live from each store and can vary by delivery area.</div>
+    </footer>
+  </div>
+</body>
+</html>

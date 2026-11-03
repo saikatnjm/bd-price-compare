@@ -1,0 +1,152 @@
+<!doctype html>
+<!-- Local dev preview of the popup with a stubbed chrome.* API and fake
+     streaming search results. Not part of the extension; gitignored. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>BD Price Compare — preview</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="logo">৳</span>
+      <h1 id="appName">BD Price Compare</h1>
+    </div>
+    <div class="header-actions">
+      <button id="langBtn" class="lang" title="বাংলায় দেখুন">বাং</button>
+      <button id="openTab" title="Open in a full tab">⛶</button>
+      <button id="openOptions" title="Settings">⚙</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button id="tabSearch" class="tab active">Search</button>
+    <button id="tabCart" class="tab">Cart <span id="cartBadge" class="cartbadge hidden">0</span></button>
+    <button id="tabWatch" class="tab">⭐ <span id="watchLabel">Watch</span></button>
+  </nav>
+
+  <section id="viewSearch">
+    <div id="cats" class="cats"></div>
+    <div class="searchbar">
+      <input id="query" type="search" placeholder="Search a product…" autofocus>
+      <button id="go">Compare</button>
+    </div>
+
+    <div id="detect" class="detect"></div>
+    <div id="recent" class="recent"></div>
+    <div id="chips" class="chips"></div>
+    <div id="best" class="best hidden"></div>
+
+    <div class="controls hidden" id="controls">
+      <label><span id="sortLabel">Sort</span>
+        <select id="sort">
+          <option value="unit">Best unit price</option>
+          <option value="price">Lowest price</option>
+          <option value="store">By store</option>
+        </select>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="strict" checked>
+        <span id="strictLabel">Close matches only</span>
+      </label>
+    </div>
+
+    <main id="results"></main>
+  </section>
+
+  <section id="viewCart" class="hidden"><main id="cartList"></main></section>
+  <section id="viewWatch" class="hidden"><main id="watchList"></main></section>
+
+  <footer><span id="status"></span></footer>
+
+  <script type="module">
+    import { enrich } from './lib/normalize.js';
+
+    const FAKE_STORES = [
+      { id: 'shwapno', label: 'Shwapno', color: '#e2136e', category: 'grocery', enabled: true },
+      { id: 'meenabazar', label: 'Meena Bazar', color: '#00843d', category: 'grocery', enabled: true },
+      { id: 'pandamart', label: 'Pandamart', color: '#d70f64', category: 'grocery', enabled: true },
+      { id: 'daraz', label: 'Daraz', color: '#f57224', category: 'both', enabled: true },
+      { id: 'startech', label: 'Star Tech', color: '#ef4a23', category: 'electronics', enabled: true }
+    ];
+
+    const mk = (store, label, color, items, delay, ok = true) => ({
+      delay,
+      result: {
+        store, label, color, ok, searchUrl: '#', ms: delay,
+        error: ok ? undefined : 'bot wall — try on the site',
+        items: items.map(i => enrich({ ...i, store }))
+      }
+    });
+
+    const IMG = 'icons/icon128.png';
+    const FEED = [
+      mk('shwapno', 'Shwapno', '#e2136e', [
+        { name: 'Himalaya Anti Hair Fall Shampoo 180(±)10ml (Buy1 Get1 Free)', price: 270, url: '#', image: IMG },
+        { name: 'Himalaya Gentle Daily Care Shampoo 400ml', price: 520, url: '#', image: IMG }
+      ], 400),
+      mk('meenabazar', 'Meena Bazar', '#00843d', [
+        { name: 'HIMALAYA ANTI HAIR FALL SHAMPOO 180ML B1G1', price: 270, url: '#', image: IMG },
+        { name: 'Himalaya Anti Hair Fall Shampoo Cc 375ml Save40%', price: 288, oldPrice: 480, url: '#', image: IMG }
+      ], 900),
+      mk('daraz', 'Daraz', '#f57224', [
+        { name: 'Himalaya Anti Hair Fall Shampoo 340ml', price: 465, url: '#', image: IMG, rating: 4.7, reviews: 211 }
+      ], 1600),
+      mk('pandamart', 'Pandamart', '#d70f64', [
+        { name: 'Parachute Naturale Shampoo Anti Hair Fall 320ml', price: 265, url: '#', image: IMG }
+      ], 3200)
+    ];
+
+    function fakePort() {
+      const listeners = [];
+      const port = {
+        onMessage: { addListener: f => listeners.push(f) },
+        onDisconnect: { addListener() {} },
+        disconnect() {},
+        postMessage(msg) {
+          if (msg.type !== 'SEARCH') return;
+          const emit = ev => listeners.forEach(f => f(ev));
+          setTimeout(() => emit({ type: 'plan', stores: FEED.map(f => f.result.store).concat('startech') }), 60);
+          for (const f of FEED) setTimeout(() => emit({ type: 'store', result: f.result }), f.delay);
+          setTimeout(() => emit({ type: 'skip', stores: ['startech'], detected: 'grocery' }), 1100);
+          setTimeout(() => emit({
+            type: 'done',
+            data: { query: msg.query, category: msg.category, detectedCategory: 'grocery', at: Date.now(), results: FEED.map(f => f.result) }
+          }), 3400);
+        }
+      };
+      return port;
+    }
+
+    const mem = {};
+    window.chrome = {
+      storage: {
+        sync: { get: async () => ({}), set: async () => {} },
+        local: {
+          get: async k => (typeof k === 'string' ? { [k]: mem[k] } : {}),
+          set: async o => Object.assign(mem, o),
+          remove: async () => {}
+        },
+        onChanged: { addListener() {} }
+      },
+      runtime: {
+        sendMessage: async msg => {
+          if (msg.type === 'GET_STORES') return { stores: FAKE_STORES, settings: { searchCategory: 'grocery' } };
+          return { ok: true };
+        },
+        connect: fakePort,
+        onMessage: { addListener() {} },
+        openOptionsPage() {},
+        getURL: p => p
+      },
+      tabs: { query: async () => [], create() {} },
+      scripting: { executeScript: async () => [{ result: null }] }
+    };
+    mem.recentSearches = ['himalaya shampoo 180ml', 'surf excel 1kg', 'fresh milk 1l'];
+
+    await import('./popup.js');
+    document.getElementById('query').value = 'Himalaya Anti Hair Fall Shampoo 180ml B1G1';
+  </script>
+</body>
+</html>

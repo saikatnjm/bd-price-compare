@@ -1,0 +1,62 @@
+{
+  "manifest_version": 3,
+  "name": "BD Price Compare",
+  "version": "1.0.0",
+  "description": "Compare product prices across Shwapno, Meena Bazar, Pandamart (foodpanda), Daraz and Chaldal to find the best deal.",
+  "permissions": ["storage", "scripting", "tabs", "contextMenus", "activeTab", "alarms", "notifications"],
+  "host_permissions": [
+    "https://www.shwapno.com/*",
+    "https://shwapno.com/*",
+    "https://meenabazaronline.com/*",
+    "https://mbonlineapi.com/*",
+    "https://www.daraz.com.bd/*",
+    "https://daraz.com.bd/*",
+    "https://www.foodpanda.com.bd/*",
+    "https://foodpanda.com.bd/*",
+    "https://chaldal.com/*",
+    "https://www.startech.com.bd/*",
+    "https://www.ryans.com/*",
+    "https://gadgetandgear.com/*",
+    "https://www.pickaboo.com/*",
+    "https://www.techlandbd.com/*",
+    "https://www.sumashtech.com/*",
+    "https://www.globalbrand.com.bd/*",
+    "https://www.othoba.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "BD Price Compare",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": ["https://www.foodpanda.com.bd/*"],
+      "js": ["content/foodpanda-capture.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://meenabazaronline.com/*"],
+      "js": ["content/meena-capture.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/compare-button.js", "content/overlay.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

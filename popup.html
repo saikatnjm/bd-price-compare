@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>BD Price Compare</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="logo">৳</span>
+      <h1 id="appName">BD Price Compare</h1>
+    </div>
+    <div class="header-actions">
+      <button id="langBtn" class="lang" title="বাংলায় দেখুন">বাং</button>
+      <button id="openTab" title="Open in a full tab">⛶</button>
+      <button id="openOptions" title="Settings">⚙</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button id="tabSearch" class="tab active">Search</button>
+    <button id="tabCart" class="tab">Cart <span id="cartBadge" class="cartbadge hidden">0</span></button>
+    <button id="tabWatch" class="tab">⭐ <span id="watchLabel">Watch</span></button>
+  </nav>
+
+  <section id="viewSearch">
+    <div id="cats" class="cats"></div>
+    <div class="searchbar">
+      <input id="query" type="search" placeholder="Search a product…" autofocus>
+      <button id="go">Compare</button>
+    </div>
+
+    <div id="detect" class="detect"></div>
+    <div id="recent" class="recent"></div>
+    <div id="chips" class="chips"></div>
+    <div id="best" class="best hidden"></div>
+
+    <div class="controls hidden" id="controls">
+      <label><span id="sortLabel">Sort</span>
+        <select id="sort">
+          <option value="unit">Best unit price</option>
+          <option value="price">Lowest price</option>
+          <option value="store">By store</option>
+        </select>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="strict" checked>
+        <span id="strictLabel">Close matches only</span>
+      </label>
+    </div>
+
+    <main id="results"></main>
+  </section>
+
+  <section id="viewCart" class="hidden">
+    <main id="cartList"></main>
+  </section>
+
+  <section id="viewWatch" class="hidden">
+    <main id="watchList"></main>
+  </section>
+
+  <footer>
+    <span id="status"></span>
+  </footer>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

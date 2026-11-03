@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>BD Price Compare — Settings</title>
+  <style>
+    :root {
+      --bg: #fff; --fg: #1a1f2b; --muted: #6b7280; --line: #e5e7eb; --accent: #0f766e;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #111418; --fg: #e8eaee; --muted: #9aa3af; --line: #2a2f37; --accent: #2dd4bf; }
+    }
+    body {
+      font: 14px/1.5 system-ui, sans-serif; background: var(--bg); color: var(--fg);
+      max-width: 620px; margin: 0 auto; padding: 24px 16px 48px;
+    }
+    h1 { font-size: 20px; }
+    h2 { font-size: 15px; margin: 24px 0 8px; }
+    .store {
+      display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+      border: 1px solid var(--line); border-radius: 10px; margin-bottom: 8px;
+    }
+    .store .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .store label { flex: 1; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .store small { color: var(--muted); display: block; }
+    input[type=number], input[type=text] {
+      width: 90px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px;
+      background: var(--bg); color: var(--fg);
+    }
+    .hint { color: var(--muted); font-size: 12.5px; }
+    .pm { padding: 10px 12px; border: 1px dashed var(--line); border-radius: 10px; font-size: 13px; }
+    .pm b { color: var(--accent); }
+    button {
+      margin-top: 16px; padding: 8px 18px; border: none; border-radius: 8px;
+      background: var(--accent); color: #fff; font-weight: 600; cursor: pointer;
+    }
+    #saved { margin-left: 10px; color: var(--accent); opacity: 0; transition: opacity .3s; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <h1>BD Price Compare — Settings</h1>
+
+  <h2>Stores to search</h2>
+  <div id="stores"></div>
+
+  <h2>Pandamart (foodpanda)</h2>
+  <div class="pm" id="pmStatus">Checking…</div>
+  <p class="hint">Every pandamart you visit on
+    <a href="https://www.foodpanda.com.bd" target="_blank">foodpanda.com.bd</a> is remembered here.
+    "Auto" follows the one you visited last — handy when you switch between home, office and
+    hometown; or pin a specific store.</p>
+
+  <h2>Meena Bazar store</h2>
+  <p class="hint">Detected automatically when you visit meenabazaronline.com with a delivery
+    location set — these fields are the fallback (defaults work for Dhaka).</p>
+  <label>SubUnitId <input type="number" id="meenaSubUnitId" min="1"></label>
+  <label style="margin-left:12px">AreaId <input type="number" id="meenaAreaId" min="1"></label>
+
+  <div>
+    <button id="save">Save</button><span id="saved">Saved ✓</span>
+  </div>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>
