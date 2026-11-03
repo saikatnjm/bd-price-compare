@@ -24,6 +24,7 @@
     <button id="tabSearch" class="tab active">Search</button>
     <button id="tabCart" class="tab">Cart <span id="cartBadge" class="cartbadge hidden">0</span></button>
     <button id="tabWatch" class="tab">⭐ <span id="watchLabel">Watch</span></button>
+    <button id="tabBazar" class="tab">🧺 <span id="bazarLabel">Bazar</span></button>
   </nav>
 
   <section id="viewSearch">
@@ -57,6 +58,7 @@
 
   <section id="viewCart" class="hidden"><main id="cartList"></main></section>
   <section id="viewWatch" class="hidden"><main id="watchList"></main></section>
+  <section id="viewBazar" class="hidden"><main id="bazarList"></main></section>
 
   <footer><span id="status"></span></footer>
 
@@ -124,7 +126,10 @@
       storage: {
         sync: { get: async () => ({}), set: async () => {} },
         local: {
-          get: async k => (typeof k === 'string' ? { [k]: mem[k] } : {}),
+          get: async k => {
+            const keys = typeof k === 'string' ? [k] : Array.isArray(k) ? k : Object.keys(k || mem);
+            return Object.fromEntries(keys.filter(x => x in mem).map(x => [x, mem[x]]));
+          },
           set: async o => Object.assign(mem, o),
           remove: async () => {}
         },
@@ -144,6 +149,23 @@
       scripting: { executeScript: async () => [{ result: null }] }
     };
     mem.recentSearches = ['himalaya shampoo 180ml', 'surf excel 1kg', 'fresh milk 1l'];
+
+    // fake 7-day bazar history
+    const days = [...Array(7)].map((_, i) => new Date(Date.now() - (6 - i) * 864e5).toISOString().slice(0, 10));
+    const hist = (store, base, deltas, extra) => days.map((d, i) => ({
+      d, p: Math.round((base + deltas[i]) * (extra.mult || 1)), u: base + deltas[i],
+      l: extra.l, n: extra.n, q: extra.q, url: '#'
+    }));
+    mem.bazarHistory = {
+      rice:   { shwapno: hist('shwapno', 90, [0, 0, 1, 2, 2, 1, 0], { l: 'kg', n: 'Rupchanda Miniket Rice 10kg', q: '10kg', mult: 10 }) },
+      oil:    { shwapno: hist('shwapno', 200, [4, 4, 2, 0, 0, -2, -2], { l: 'L', n: 'Pusti Soyabean Oil 5Ltr.', q: '5Ltr', mult: 5 }),
+                meenabazar: hist('meenabazar', 199, [5, 5, 3, 1, 0, 0, 0], { l: 'L', n: 'Rupchanda Soyabean Oil Pet 5lt', q: '5lt', mult: 5 }) },
+      onion:  { shwapno: hist('shwapno', 50, [-5, -5, 0, 0, 5, 8, 10], { l: 'kg', n: 'Piyaj (Onion) Local Loose (P) Kg', q: '1kg' }) },
+      potato: { shwapno: hist('shwapno', 25, [0, 0, 0, -2, -2, -3, -3], { l: 'kg', n: 'Alu (Potato) Regular Loose Kg', q: '1kg' }) },
+      egg:    { meenabazar: hist('meenabazar', 12.5, [0, 0, .5, .5, 0, 0, -0.5], { l: 'pc', n: 'Chicken Egg (Red) 1pcs', q: '1 pcs' }) },
+      sugar:  { shwapno: hist('shwapno', 110, [0, 0, 0, 0, 0, 0, 0], { l: 'kg', n: 'Fresh Refined Sugar 1kg', q: '1kg' }) }
+    };
+    mem.bazarLast = { at: Date.now() - 3600e3, date: days[6] };
 
     await import('./popup.js');
     document.getElementById('query').value = 'Himalaya Anti Hair Fall Shampoo 180ml B1G1';

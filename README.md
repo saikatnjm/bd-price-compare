@@ -40,6 +40,15 @@ never a burst of tabs.
 
 Enable/disable any store in ⚙ Options, grouped by category.
 
+## 🧺 Daily Bazar (আজকের বাজার দর)
+
+The **Bazar** tab shows today's prices of 9 staples — miniket rice, soybean
+oil, onion, potato, farm eggs, masoor dal, sugar, salt, atta — from Shwapno
+and Meena Bazar (your selected branches), with day-over-day ▲▼ change and a
+7-day sparkline per item. Checked once a day via the direct APIs only (no
+background tabs); 30 days of history kept locally. "Check now" re-checks on
+demand.
+
 ## ⭐ Price watch
 
 Tap **☆** on any result to watch it. Watched items are re-checked once a day

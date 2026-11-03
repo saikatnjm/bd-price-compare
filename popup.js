@@ -1,4 +1,5 @@
 import { formatTaka, matchesQuery, querySize } from './lib/normalize.js';
+import { STAPLES } from './lib/bazar.js';
 import { initLang, toggleLang, getLang, t } from './lib/i18n.js';
 import {
   getCart, addToCart, setQty, removeFromCart, clearCart,
@@ -61,10 +62,12 @@ async function init() {
     if (lastData) render();
     else renderOnboard();
     if (!$('#viewCart').classList.contains('hidden')) renderCart();
+    if (!$('#viewBazar').classList.contains('hidden')) renderBazar();
   });
   $('#tabSearch').addEventListener('click', () => switchTab('search'));
   $('#tabCart').addEventListener('click', () => { switchTab('cart'); renderCart(); });
   $('#tabWatch').addEventListener('click', () => { switchTab('watch'); renderWatch(); });
+  $('#tabBazar').addEventListener('click', () => { switchTab('bazar'); openBazar(); });
 
   chrome.runtime.onMessage.addListener(msg => {
     if (msg?.type === 'CHECKOUT_PROGRESS') {
@@ -81,6 +84,7 @@ function applyStaticText() {
   $('#tabSearch').childNodes[0].textContent = t('searchTab') + ' ';
   $('#tabCart').childNodes[0].textContent = t('cartTab') + ' ';
   $('#watchLabel').textContent = t('watchTab');
+  $('#bazarLabel').textContent = t('bazarTab');
   renderCats();
   $('#sortLabel').textContent = t('sort');
   const sortOpts = $('#sort').options;
@@ -101,9 +105,11 @@ function switchTab(which) {
   $('#viewSearch').classList.toggle('hidden', which !== 'search');
   $('#viewCart').classList.toggle('hidden', which !== 'cart');
   $('#viewWatch').classList.toggle('hidden', which !== 'watch');
+  $('#viewBazar').classList.toggle('hidden', which !== 'bazar');
   $('#tabSearch').classList.toggle('active', which === 'search');
   $('#tabCart').classList.toggle('active', which === 'cart');
   $('#tabWatch').classList.toggle('active', which === 'watch');
+  $('#tabBazar').classList.toggle('active', which === 'bazar');
 }
 
 // ---- Category chips ----
@@ -717,6 +723,160 @@ async function renderWatch() {
     renderWatch();
   });
   el.appendChild(check);
+}
+
+// ---- Daily Bazar view ----
+let bazarBusy = false;
+
+// Open the tab: render what we have, then refresh in the background if
+// today's check hasn't run yet.
+async function openBazar() {
+  await renderBazar();
+  if (bazarBusy) return;
+  bazarBusy = true;
+  renderBazar();
+  const res = await chrome.runtime.sendMessage({ type: 'BAZAR_REFRESH' }).catch(() => null);
+  bazarBusy = false;
+  if (!$('#viewBazar').classList.contains('hidden')) renderBazar();
+  return res;
+}
+
+function sparkline(series) {
+  const pts = series.slice(-7);
+  if (pts.length < 2) return null;
+  const min = Math.min(...pts), max = Math.max(...pts);
+  const span = max - min || 1;
+  const W = 56, H = 16, step = W / (pts.length - 1);
+  const coords = pts.map((v, i) =>
+    `${(i * step).toFixed(1)},${(H - 2 - ((v - min) / span) * (H - 4)).toFixed(1)}`
+  );
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('class', 'spark');
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+  line.setAttribute('points', coords.join(' '));
+  line.setAttribute('fill', 'none');
+  line.setAttribute('stroke', 'currentColor');
+  line.setAttribute('stroke-width', '1.5');
+  svg.appendChild(line);
+  return svg;
+}
+
+async function renderBazar() {
+  const el = $('#bazarList');
+  const { bazarHistory = {}, bazarLast } = await chrome.storage.local.get(['bazarHistory', 'bazarLast']);
+  el.innerHTML = '';
+
+  const hint = document.createElement('div');
+  hint.className = 'carthint';
+  hint.textContent = t('bazarHint');
+  el.appendChild(hint);
+
+  if (bazarBusy) {
+    const d = document.createElement('div');
+    d.className = 'carthint busy';
+    d.textContent = '⏳ ' + t('bazarChecking');
+    el.appendChild(d);
+  }
+
+  const lang = getLang();
+  let any = false;
+
+  for (const s of STAPLES) {
+    const perStore = bazarHistory[s.id] || {};
+    const latest = [];
+    for (const [storeId, hist] of Object.entries(perStore)) {
+      if (hist.length) latest.push({ storeId, ...hist[hist.length - 1] });
+    }
+    if (!latest.length) continue;
+    any = true;
+    latest.sort((a, b) => a.u - b.u);
+    const best = latest[0];
+    const meta = storeMeta[best.storeId] || { label: best.storeId, color: '#888' };
+
+    // Cheapest unit price across stores, per day → change + sparkline
+    const byDate = {};
+    for (const hist of Object.values(perStore)) {
+      for (const pt of hist) {
+        if (!(pt.d in byDate) || pt.u < byDate[pt.d]) byDate[pt.d] = pt.u;
+      }
+    }
+    const dates = Object.keys(byDate).sort();
+    const series = dates.map(d => byDate[d]);
+    const prev = series.length >= 2 ? series[series.length - 2] : null;
+    const diff = prev != null ? Math.round((best.u - prev) * 100) / 100 : null;
+
+    const row = document.createElement(best.url ? 'a' : 'div');
+    row.className = 'bazrow';
+    row.style.setProperty('--store-c', meta.color);
+    if (best.url) { row.href = best.url; row.target = '_blank'; row.rel = 'noreferrer'; }
+
+    const left = document.createElement('div');
+    left.className = 'mid';
+    const nm = document.createElement('div');
+    nm.className = 'bazname';
+    nm.textContent = lang === 'bn' ? s.bn : s.en;
+    const sub = document.createElement('div');
+    sub.className = 'meta';
+    sub.appendChild(storeBadge(meta.label, meta.color));
+    const item = document.createElement('span');
+    item.className = 'sub';
+    item.textContent = `${best.n} · ${formatTaka(best.p)}`;
+    item.title = best.n;
+    sub.appendChild(item);
+    left.append(nm, sub);
+    row.appendChild(left);
+
+    const right = document.createElement('div');
+    right.className = 'bazright';
+    const up = document.createElement('div');
+    up.className = 'bazunit';
+    up.textContent = `${formatTaka(best.u)}/${best.l}`;
+    right.appendChild(up);
+    const line2 = document.createElement('div');
+    line2.className = 'bazline2';
+    if (diff != null && Math.abs(diff) >= 0.01) {
+      const ch = document.createElement('span');
+      ch.className = 'bazchange ' + (diff > 0 ? 'upbad' : 'downgood');
+      const pct = prev ? Math.round(Math.abs(diff) / prev * 1000) / 10 : 0;
+      ch.textContent = `${diff > 0 ? '▲' : '▼'} ${formatTaka(Math.abs(diff))} (${pct}%)`;
+      ch.title = t('bazarVsYesterday');
+      line2.appendChild(ch);
+    }
+    const spark = sparkline(series);
+    if (spark) line2.appendChild(spark);
+    if (line2.childNodes.length) right.appendChild(line2);
+    row.appendChild(right);
+    el.appendChild(row);
+  }
+
+  if (!any && !bazarBusy) {
+    const d = document.createElement('div');
+    d.className = 'empty';
+    d.textContent = t('bazarEmpty');
+    el.appendChild(d);
+  }
+
+  const foot = document.createElement('div');
+  foot.className = 'cartfoot';
+  const when = document.createElement('span');
+  when.className = 'sub';
+  when.style.color = 'var(--muted)';
+  when.textContent = bazarLast ? `${t('bazarUpdated')}: ${new Date(bazarLast.at).toLocaleString()}` : '';
+  const check = document.createElement('button');
+  check.className = 'clearbtn';
+  check.disabled = bazarBusy;
+  check.textContent = t('bazarCheckNow');
+  check.addEventListener('click', async () => {
+    if (bazarBusy) return;
+    bazarBusy = true;
+    renderBazar();
+    await chrome.runtime.sendMessage({ type: 'BAZAR_REFRESH', force: true }).catch(() => null);
+    bazarBusy = false;
+    renderBazar();
+  });
+  foot.append(when, check);
+  el.appendChild(foot);
 }
 
 // ---- Cart view ----

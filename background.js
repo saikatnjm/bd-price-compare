@@ -11,6 +11,7 @@ import { techland, sumashtech, globalbrand, othoba } from './adapters/extraStore
 import { enrich, matchScore } from './lib/normalize.js';
 import { waitForLoad } from './lib/tabScrape.js';
 import { getCart, addToCart, cartCount, itemKey } from './lib/cart.js';
+import { maybeRefreshBazar } from './lib/bazar.js';
 import { addToCartOnPage, addToCartOnDarkstore, STORE_CHECKOUT } from './lib/autoAdd.js';
 
 const ADAPTERS = [
@@ -307,8 +308,14 @@ async function checkAllWatches({ manual = false } = {}) {
   return watches;
 }
 
+const bazarAdapters = { shwapno, meenabazar };
+const refreshBazar = async (force = false) =>
+  maybeRefreshBazar(bazarAdapters, await getSettings(), force);
+
 chrome.alarms.create('priceWatch', { periodInMinutes: 24 * 60, delayInMinutes: 90 });
+chrome.alarms.create('bazarDaily', { periodInMinutes: 24 * 60, delayInMinutes: 20 });
 chrome.alarms.onAlarm.addListener(a => {
+  if (a.name === 'bazarDaily') refreshBazar();
   if (a.name === 'priceWatch') checkAllWatches();
 });
 
@@ -405,6 +412,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
   if (msg?.type === 'WATCH_REMOVE') {
     removeWatch(msg.key).then(ws => sendResponse({ ok: true, count: ws.length }));
+    return true;
+  }
+  if (msg?.type === 'BAZAR_REFRESH') {
+    refreshBazar(!!msg.force)
+      .then(res => sendResponse({ ok: true, ...res }))
+      .catch(e => sendResponse({ ok: false, error: e?.message || String(e) }));
     return true;
   }
   if (msg?.type === 'WATCH_CHECK') {
