@@ -21,7 +21,10 @@
     "https://www.techlandbd.com/*",
     "https://www.sumashtech.com/*",
     "https://www.globalbrand.com.bd/*",
-    "https://www.othoba.com/*"
+    "https://www.othoba.com/*",
+    "https://www.arogga.com/*",
+    "https://api.arogga.com/*",
+    "https://medeasy.health/*"
   ],
   "background": {
     "service_worker": "background.js",

@@ -79,6 +79,8 @@ h1 { font-size: 15px; margin: 0; }
   animation: spin .8s linear infinite;
 }
 .chip.skip { opacity: .45; }
+.chip.bikroy { border-color: #d97706; color: #d97706; font-weight: 700; }
+.chip.bikroy:hover { background: rgba(217, 119, 6, .12); }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ---- best-deal hero card ---- */

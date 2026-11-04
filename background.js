@@ -7,7 +7,8 @@ import { startech } from './adapters/startech.js';
 import { ryans } from './adapters/ryans.js';
 import { gadgetandgear } from './adapters/gadgetandgear.js';
 import { pickaboo } from './adapters/pickaboo.js';
-import { techland, sumashtech, globalbrand, othoba } from './adapters/extraStores.js';
+import { techland, sumashtech, globalbrand, othoba, medeasy } from './adapters/extraStores.js';
+import { arogga } from './adapters/arogga.js';
 import { enrich, matchScore } from './lib/normalize.js';
 import { waitForLoad } from './lib/tabScrape.js';
 import { getCart, addToCart, cartCount, itemKey } from './lib/cart.js';
@@ -18,6 +19,7 @@ import { addToCartOnPage, addToCartOnDarkstore, STORE_CHECKOUT } from './lib/aut
 const ADAPTERS = [
   shwapno, meenabazar, pandamart, chaldal,
   startech, ryans, gadgetandgear, pickaboo, techland, sumashtech, globalbrand,
+  arogga, medeasy,
   othoba, daraz
 ];
 
@@ -27,6 +29,7 @@ const DEFAULT_SETTINGS = {
     shwapno: true, meenabazar: true, pandamart: true, chaldal: false,
     startech: true, ryans: true, gadgetandgear: true,
     pickaboo: false, techland: false, sumashtech: false, globalbrand: false,
+    arogga: true, medeasy: true,
     othoba: false, daraz: true
   },
   searchCategory: 'all',
@@ -129,15 +132,14 @@ async function runSearch(query, category, onEvent = () => {}) {
   // opened at all (fewer tabs, no pointless searches).
   let detected = category;
   if (category === 'all') {
-    const counts = { grocery: 0, electronics: 0 };
+    const counts = { grocery: 0, electronics: 0, medicine: 0 };
     for (const r of apiResults) {
       const a = ADAPTERS.find(x => x.id === r.store);
-      if (!a || a.category === 'both' || !r.ok) continue;
+      if (!a || a.category === 'both' || !r.ok || !(a.category in counts)) continue;
       counts[a.category] += r.items.filter(i => matchScore(i.name, query) >= 0.65).length;
     }
-    if (counts.grocery || counts.electronics) {
-      detected = counts.electronics > counts.grocery ? 'electronics' : 'grocery';
-    }
+    const winner = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+    if (winner[1] > 0) detected = winner[0];
   }
 
   // Phase 2: tab-scraped stores (one tab at a time via the scrape queue).
@@ -358,7 +360,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 // means an electronics product; on Shwapno, a grocery one).
 const HOST_CATEGORY = [
   [/shwapno\.com|meenabazaronline\.com|chaldal\.com|foodpanda\.com/i, 'grocery'],
-  [/startech\.com\.bd|ryans\.com|gadgetandgear\.com|pickaboo\.com/i, 'electronics']
+  [/startech\.com\.bd|ryans\.com|gadgetandgear\.com|pickaboo\.com|techlandbd\.com|sumashtech\.com/i, 'electronics'],
+  [/arogga\.com|medeasy\.health|medex\.com\.bd|lazzpharma\.com|osudpotro\.com/i, 'medicine']
 ];
 
 function categoryForUrl(url) {

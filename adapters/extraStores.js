@@ -57,3 +57,9 @@ export const othoba = tabStore({
   homepage: 'https://www.othoba.com',
   buildUrl: q => `https://www.othoba.com/search?q=${encodeURIComponent(q)}`
 });
+
+export const medeasy = tabStore({
+  id: 'medeasy', label: 'MedEasy', color: '#6366f1', category: 'medicine',
+  homepage: 'https://medeasy.health',
+  buildUrl: q => `https://medeasy.health/search/${encodeURIComponent(q)}`
+});

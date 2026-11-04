@@ -3,6 +3,7 @@ const DEFAULTS = {
     shwapno: true, meenabazar: true, pandamart: true, chaldal: false,
     startech: true, ryans: true, gadgetandgear: true,
     pickaboo: false, techland: false, sumashtech: false, globalbrand: false,
+    arogga: true, medeasy: true,
     othoba: false, daraz: true
   },
   meenaSubUnitId: 2,
@@ -29,6 +30,13 @@ const CATEGORIES = [
       { id: 'techland', label: 'Techland', color: '#16a34a', note: 'techlandbd.com — background tab' },
       { id: 'sumashtech', label: 'Sumash Tech', color: '#db2777', note: 'sumashtech.com — background tab' },
       { id: 'globalbrand', label: 'Global Brand', color: '#0891b2', note: 'globalbrand.com.bd — background tab' }
+    ]
+  },
+  {
+    title: '💊 Medicine',
+    stores: [
+      { id: 'arogga', label: 'Arogga', color: '#14b8a6', note: 'arogga.com — direct API; per-tablet & strip prices, MRP shown' },
+      { id: 'medeasy', label: 'MedEasy', color: '#6366f1', note: 'medeasy.health — background tab' }
     ]
   },
   {

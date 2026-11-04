@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BD Price Compare — Compare Prices Across Bangladeshi Online Shops | Free Chrome Extension</title>
   <meta name="description" content="Free, open-source Chrome extension that compares product prices across Shwapno, Meena Bazar, Pandamart, Daraz, Chaldal, Star Tech, Ryans, Gadget & Gear, Pickaboo and more Bangladeshi online shops — with per-kg / per-litre unit prices, 30-day price history, fake-discount detection, Buy1-Get1 aware best-deal picks, daily bazar rates (আজকের বাজার দর), price-drop alerts and a cross-store cart. English + বাংলা.">
-  <meta name="keywords" content="price comparison Bangladesh, BD price compare, Chrome extension, Daraz price, Shwapno price, Meena Bazar online, Pandamart foodpanda, Chaldal, Star Tech price, Ryans computers, Gadget and Gear, Pickaboo, best deal Bangladesh, grocery price Dhaka, electronics price BD, দাম তুলনা, unit price, price tracker, আজকের বাজার দর, daily market price Bangladesh, onion price today, rice price BD, soybean oil price, price history Bangladesh, daraz price history, fake discount checker, daraz 11.11 real discount, price drop alert, price tracker extension, দাম কমার এলার্ট, ভুয়া ছাড়">
+  <meta name="keywords" content="price comparison Bangladesh, BD price compare, Chrome extension, Daraz price, Shwapno price, Meena Bazar online, Pandamart foodpanda, Chaldal, Star Tech price, Ryans computers, Gadget and Gear, Pickaboo, best deal Bangladesh, grocery price Dhaka, electronics price BD, দাম তুলনা, unit price, price tracker, আজকের বাজার দর, daily market price Bangladesh, onion price today, rice price BD, soybean oil price, price history Bangladesh, daraz price history, fake discount checker, daraz 11.11 real discount, price drop alert, price tracker extension, দাম কমার এলার্ট, ভুয়া ছাড়, medicine price BD, napa price, ওষুধের দাম, arogga, medeasy, broiler chicken price today, আজকের মুরগির দাম, beef price bd, গরুর মাংসের দাম, bikroy used price">
   <meta name="author" content="Saikat Roy">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://saikatnjm.github.io/bd-price-compare/">
@@ -42,7 +42,10 @@
         "applicationSubCategory": "Price comparison browser extension",
         "description": "Chrome extension that compares product prices across Bangladeshi online shops (Shwapno, Meena Bazar, Pandamart, Daraz, Chaldal, Star Tech, Ryans, Gadget & Gear, Pickaboo, Techland, Sumash Tech, Global Brand, Othoba) with per-kg/per-litre unit prices, 30-day price history with fake-discount detection, Buy1-Get1-aware best-deal ranking, daily bazar staple rates, price-drop alerts with custom targets, shareable comparison images and a cross-store cart. Bilingual English/Bangla.",
         "featureList": [
-          "Price comparison across 13 Bangladeshi stores",
+          "Price comparison across 15 Bangladeshi stores",
+          "Medicine prices: per-tablet and per-strip from Arogga and MedEasy",
+          "Daily protein prices: broiler chicken, beef, rui fish, green chili",
+          "Used-price check via Bikroy for electronics",
           "Per-kg / per-litre unit prices",
           "30-day price history and lowest-price badges",
           "Fake discount detection (strikethrough price verification)",
@@ -78,7 +81,12 @@
           {
             "@type": "Question",
             "name": "Which Bangladeshi stores does BD Price Compare search?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Groceries: Shwapno, Meena Bazar, Pandamart (foodpanda) and Chaldal. Electronics: Star Tech, Ryans, Gadget & Gear, Pickaboo, Techland, Sumash Tech and Global Brand. Daraz and Othoba cover both. You pick which stores are searched in Settings; the major three of each category are on by default." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Groceries: Shwapno, Meena Bazar, Pandamart (foodpanda) and Chaldal. Electronics: Star Tech, Ryans, Gadget & Gear, Pickaboo, Techland, Sumash Tech and Global Brand, with a Bikroy link for used prices. Medicine: Arogga and MedEasy. Daraz and Othoba cover everything. You pick which stores are searched in Settings; the major ones of each category are on by default." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can it compare medicine prices in Bangladesh?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes — search any medicine (e.g. Napa, Sergel, Seclo) and see per-tablet and per-strip prices from Arogga and MedEasy side by side, with MRP versus discounted price, generic names and prescription marks. It shows price information only, never medical advice." }
           },
           {
             "@type": "Question",
@@ -286,7 +294,7 @@
     </section>
 
     <section id="stores">
-      <h2>13 Bangladeshi stores, one click</h2>
+      <h2>15 Bangladeshi stores, one click</h2>
       <p class="sub">Searched with your own logged-in sessions, locally in your browser. Pick your stores in Settings — the major three of each category are on by default.</p>
       <div class="stores">
         <div class="storecat">🥬 Groceries</div>
@@ -302,6 +310,9 @@
         <span class="store"><i style="background:#16a34a"></i>Techland</span>
         <span class="store"><i style="background:#db2777"></i>Sumash Tech</span>
         <span class="store"><i style="background:#0891b2"></i>Global Brand</span>
+        <div class="storecat">💊 Medicine</div>
+        <span class="store"><i style="background:#14b8a6"></i>Arogga</span>
+        <span class="store"><i style="background:#6366f1"></i>MedEasy</span>
         <div class="storecat">🛒 Everything</div>
         <span class="store"><i style="background:#f57224"></i>Daraz</span>
         <span class="store"><i style="background:#65a30d"></i>Othoba</span>
@@ -329,7 +340,11 @@
         <div class="card"><span class="ic">📤</span><b>Share as image</b>
           <p>One tap turns any comparison into a clean WhatsApp/Facebook-ready image card — best deal crowned, all stores listed.</p></div>
         <div class="card"><span class="ic">🧺</span><b>Daily Bazar — আজকের বাজার দর</b>
-          <p>Today's prices of 9 staples — rice, soybean oil, onion, potato, eggs, dal, sugar, salt, atta — with day-over-day change and 7-day trends, from your own branches.</p></div>
+          <p>Today's prices of 13 staples — rice, soybean oil, onion, potato, eggs, dal, sugar, salt, atta, broiler chicken, beef, rui fish, green chili — with day-over-day change and 7-day trends.</p></div>
+        <div class="card"><span class="ic">💊</span><b>Medicine prices</b>
+          <p>Search any medicine — per-tablet and per-strip prices from Arogga and MedEasy, MRP vs discounted, generic names and ℞ marks. Price info only, never medical advice.</p></div>
+        <div class="card"><span class="ic">🔄</span><b>Used prices via Bikroy</b>
+          <p>On electronics searches, one chip opens the same query on Bikroy — so you see new vs used side by side before deciding.</p></div>
         <div class="card"><span class="ic">🧭</span><b>Category smart</b>
           <p>Knows groceries from electronics, auto-detects which one you're searching, and never opens pointless tabs — stores are queried one at a time, politely.</p></div>
         <div class="card"><span class="ic">🌏</span><b>English + বাংলা</b>

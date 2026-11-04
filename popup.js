@@ -19,8 +19,8 @@ let checkoutBusy = null;
 let category = 'all';
 let watchBusy = false;
 
-const CATS = ['all', 'grocery', 'electronics'];
-const CAT_LABEL_KEYS = { all: 'catAll', grocery: 'catGrocery', electronics: 'catElectronics' };
+const CATS = ['all', 'grocery', 'electronics', 'medicine'];
+const CAT_LABEL_KEYS = { all: 'catAll', grocery: 'catGrocery', electronics: 'catElectronics', medicine: 'catMedicine' };
 
 if (new URLSearchParams(location.search).get('view') === 'tab') {
   document.body.classList.add('fullpage');
@@ -283,6 +283,19 @@ function renderChips(data) {
     chip.appendChild(document.createTextNode(' ' + text));
     if (skipped) chip.title = t('skippedNote', { cat: t(CAT_LABEL_KEYS[data?.detectedCategory] || 'catAll') });
     chipsEl.appendChild(chip);
+  }
+
+  // Electronics: half the buying decision is "what does it go for used?" —
+  // one chip deep-links the same query on Bikroy (no scraping, just a link).
+  const effCat = data?.detectedCategory || (category !== 'all' ? category : null);
+  if (effCat === 'electronics' && data?.query) {
+    const bk = document.createElement('a');
+    bk.className = 'chip bikroy';
+    bk.href = 'https://bikroy.com/en/ads/bangladesh?query=' + encodeURIComponent(data.query);
+    bk.target = '_blank';
+    bk.rel = 'noreferrer';
+    bk.textContent = '🔄 ' + t('usedBikroy');
+    chipsEl.appendChild(bk);
   }
 }
 
